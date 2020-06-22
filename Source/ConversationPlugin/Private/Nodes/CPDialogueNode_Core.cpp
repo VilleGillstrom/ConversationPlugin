@@ -3,6 +3,11 @@
 
 #include "ConversationPlugin/Public/Nodes/CPDialogueNode_Core.h"
 
+#include "CPConversationPieceInterface.h"
+#include "CPSMConversation.h"
+#include "CPTypes.h"
+#include "ConversationPlugin/Public/CPConversationSubsystem.h"
+
 
 UCPDialogueNode_Core::UCPDialogueNode_Core() : Super()
 {
@@ -12,6 +17,7 @@ UCPDialogueNode_Core::UCPDialogueNode_Core() : Super()
     DialogueBody.WidgetInfo.DefaultText = FText::FromString("Dialogue");
     DialogueBody.WidgetInfo.bConsiderForDefaultWidget = true;
     DialogueBody.WidgetInfo.DisplayOrder = 1;
+    DialogueBody.TextSerializer.ToTextFunctionNames.Add("ToConversationText");
     bDisplayNameWidget = false;
     bUseCustomColors = true;
     NodeColor = FLinearColor(0.1f, 0.62f, 1.f, 0.7f);
@@ -25,6 +31,12 @@ const FText& UCPDialogueNode_Core::GetDialogueText() const
     return DialogueBody.Result;
 }
 
+FText UCPDialogueNode_Core::GetDialogueSpeakerAsText() const
+{
+    UObject* CurrentSpeaker = GetDialogueSpeaker();
+    return CurrentSpeaker ? ICPConversationPieceInterface::TryConversationText(CurrentSpeaker) : FText::FromString("");
+}
+
 void UCPDialogueNode_Core::SetPreviousDialogueSpeaker(UObject* Speaker)
 {
     PreviousDialogueSpeaker = Speaker;
@@ -35,3 +47,18 @@ UObject* UCPDialogueNode_Core::GetDialogueSpeaker_Implementation() const
     const_cast<UCPDialogueNode_Core*>(this)->EvaluateGraphProperties();
     return PreviousDialogueSpeaker;
 }
+
+void UCPDialogueNode_Core::OnStateBegin_Implementation()
+{
+   
+}
+
+void UCPDialogueNode_Core::OnStateEnd_Implementation()
+{
+}
+
+void UCPDialogueNode_Core::OnTryContinue()
+{
+    
+}
+

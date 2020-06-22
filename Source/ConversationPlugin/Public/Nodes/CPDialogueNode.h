@@ -49,7 +49,8 @@ class CONVERSATIONPLUGIN_API UCPDialogueNode : public UCPDialogueNode_Core
     void GetAllDialogueSpeakers(TArray<UObject*>& Speakers, bool bConnectedOnly = true, bool bBreakOnChoices = false) const;
 
 	protected:
-        virtual void OnStateBegin_Implementation() override;
+	
+    virtual void OnStateBegin_Implementation() override;
 	virtual void OnStateUpdate_Implementation(float DeltaSeconds) override;
 	virtual void OnStateEnd_Implementation() override;
 	

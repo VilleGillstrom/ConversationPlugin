@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CPCoreNode.h"
 #include "SMTextGraphProperty.h"
 #include "Nodes/States/SMStateInstance.h"
 #include "CPDialogueNode_Core.generated.h"
@@ -11,7 +12,7 @@
  * 
  */
 UCLASS()
-class CONVERSATIONPLUGIN_API UCPDialogueNode_Core : public USMStateInstance
+class CONVERSATIONPLUGIN_API UCPDialogueNode_Core : public UCPCoreNode
 {
 	GENERATED_BODY()
 public:
@@ -25,16 +26,28 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, BlueprintPure, Category = "Dialogue")
     UObject* GetDialogueSpeaker() const;
 
+	/* The speaker this dialogue belongs to. */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Dialogue")
+    FText GetDialogueSpeakerAsText() const;
+	
 	/* Set from previous node during transition. */
 	void SetPreviousDialogueSpeaker(UObject* Speaker);
 
-	protected:
-        virtual UObject* GetDialogueSpeaker_Implementation() const;
 	
 	protected:
-        UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
-        FSMTextGraphProperty DialogueBody;
+    virtual UObject* GetDialogueSpeaker_Implementation() const;
+	
+	protected:
+    UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
+    FSMTextGraphProperty DialogueBody;
 
 	UPROPERTY()
     UObject* PreviousDialogueSpeaker;
+
+	virtual void OnStateBegin_Implementation() override;
+
+	virtual void OnStateEnd_Implementation() override;
+
+	UFUNCTION()
+	void OnTryContinue();
 };

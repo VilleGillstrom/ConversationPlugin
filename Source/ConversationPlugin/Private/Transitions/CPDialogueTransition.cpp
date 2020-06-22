@@ -3,6 +3,7 @@
 
 #include "Transitions/CPDialogueTransition.h"
 #include "SMStateMachine.h"
+#include "ConversationPlugin/Public/CPConversationSubsystem.h"
 #include "Nodes/CPDialogueChoiceNode.h"
 
 UCPDialogueTransition::UCPDialogueTransition() : Super()
@@ -63,6 +64,15 @@ void UCPDialogueTransition::OnTransitionInitialized_Implementation()
 	}
 
 	bCanGoToNextDialogue = false;
+	if (UCPCoreNode* Previous = Cast<UCPCoreNode>(GetPreviousStateInstance()))
+	{
+		if( Previous->bAutoSkip)
+		{
+			bCanGoToNextDialogue = true;
+		}
+	}
+	FConversationDelegates::OnTryContinueConversationEvent.AddUObject(this, &UCPDialogueTransition::TryContinue);
+	
 }
 
 bool UCPDialogueTransition::CanEnterTransition_Implementation() const
@@ -85,7 +95,7 @@ bool UCPDialogueTransition::CanEnterTransition_Implementation() const
 			return PreviousState->IsInEndState();
 		}
 	}
-	
+
 	return true;
 }
 
@@ -100,6 +110,13 @@ void UCPDialogueTransition::OnTransitionEntered_Implementation()
 			Next->SetPreviousDialogueSpeaker(Previous->GetDialogueSpeaker());
 		}
 	}
+
+}
+
+void UCPDialogueTransition::OnTransitionShutdown_Implementation()
+{
+	FConversationDelegates::OnTryContinueConversationEvent.RemoveAll(this);
+
 }
 
 void UCPDialogueTransition::OnDialogueUpdated_Implementation()
@@ -112,4 +129,9 @@ void UCPDialogueTransition::OnDialogueUpdated_Implementation()
 	}
 
 	bCanGoToNextDialogue = true;
+}
+
+void UCPDialogueTransition::TryContinue()
+{
+	OnDialogueUpdated();
 }

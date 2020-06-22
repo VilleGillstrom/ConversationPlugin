@@ -22,14 +22,17 @@ void UCPDialogueChoiceNode::SetCurrentDialogueOwner(UCPDialogueNode* Owner)
 
 void UCPDialogueChoiceNode::OnStateBegin_Implementation()
 {
+    Super::OnStateBegin_Implementation();
 }
 
 void UCPDialogueChoiceNode::OnStateUpdate_Implementation(float DeltaSeconds)
 {
+    Super::OnStateUpdate_Implementation(DeltaSeconds);
 }
 
 void UCPDialogueChoiceNode::OnStateEnd_Implementation()
 {
+    Super::OnStateEnd_Implementation();
 }
 
 void UCPDialogueChoiceNode::SelectChoice_Implementation()

@@ -30,7 +30,7 @@ class CONVERSATIONPLUGIN_API UCPDialogueChoiceNode : public UCPDialogueNode_Core
 	void SetCurrentDialogueOwner(UCPDialogueNode* Owner);
 
 	protected:
-        virtual void OnStateBegin_Implementation() override;
+    virtual void OnStateBegin_Implementation() override;
 	virtual void OnStateUpdate_Implementation(float DeltaSeconds) override;
 	virtual void OnStateEnd_Implementation() override;
 

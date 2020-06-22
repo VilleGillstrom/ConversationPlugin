@@ -36,10 +36,12 @@ protected:
 	void OnTransitionInitialized_Implementation() override;
 	bool CanEnterTransition_Implementation() const override;
 	void OnTransitionEntered_Implementation() override;
+	void OnTransitionShutdown_Implementation() override;
 
 	virtual void OnDialogueUpdated_Implementation();
-	
-	protected:
+	void TryContinue();
+
+protected:
         UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
         bool bCanGoToNextDialogue;
 	
